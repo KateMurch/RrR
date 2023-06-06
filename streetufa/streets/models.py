@@ -1,4 +1,9 @@
 from django.db import models
+from django.contrib.auth.models import User
+from django.utils import timezone
+from django.db.models.signals import post_save
+from django.dispatch import receiver
+# from django.contrib.auth import get_user_model
 
 
 class Street(models.Model):
@@ -32,3 +37,26 @@ class Person(models.Model):
 
     def __str__(self):
         return self.person_name_ru
+
+
+class UserModel(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE)
+
+    class Role(models.IntegerChoices):
+        U = 0, 'User'
+        S = 1, 'Stuff'
+    role = models.IntegerField(choices=Role.choices, default=Role.U)
+
+    USERNAME_FIELD = 'email'
+
+    def __str__(self):
+        return self.user.username
+
+    @receiver(post_save, sender=User)
+    def create_userprofile(sender, instance, created, **kwargs):
+        if created:
+            UserModel.objects.create(user=instance)
+
+    @receiver(post_save, sender=User)
+    def save_userprofile(sender, instance, **kwargs):
+        instance.usermodel.save()

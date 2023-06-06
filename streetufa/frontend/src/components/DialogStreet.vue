@@ -35,12 +35,13 @@ export default {
     z-index: 10;
 }
 .dialog_content {
-    margin: auto auto auto 1%;
+    margin: 6% auto auto 1%;
     background: rgba(253, 253, 253, 0.7);
     backdrop-filter: blur(8px);
     border-radius: 12px;
-    height: 400px;
+    height: 76%;
     width: 40%;
+    min-height: 500px;
     padding: 2% 1%;
 }
 </style>

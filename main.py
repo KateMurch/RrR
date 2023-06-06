@@ -19,3 +19,9 @@ if __name__ == '__main__':
 # в frontend команда npm run watch
 # в streetufa команда python manage.py runserver
 #
+#pip install django, pillow, djangorestframework
+#npm install pug?
+#npm install --save axios, vuex, vue-router
+# python -m pip install django-cors-headers
+
+# pip freeze > requirement.txt

@@ -4,12 +4,21 @@
       <AddStreet :new_coords="coord" />
     </DialogStreet>
     <div class="left_area" v-if="selectedStreet===null">
-      <input class="searchInput" v-model="searchQuery" placeholder="Поиск.....">
+      <input v-if="$store.state.isEng === true" v-model="searchQuery" class="searchInput" placeholder="Поиск.....">
+      <input v-else v-model="searchQuery" class="searchInput" placeholder="Search.....">
       <button></button>
       <StreetList :streets="sortedAndSearched" :persons="persons_api" @select="selectOneStreet" />  
     </div>
     <div class="another_left_area" v-else>
-      <button type="submit" @click="toList">Назад</button><br>
+      <button v-if="$store.state.isEng === true" class="btn" type="submit" @click="toList">
+          <img :src="strelka" class="img">
+          Назад
+      </button>
+      <button v-else class="btn" type="submit" @click="toList">
+          <img :src="strelka" class="img">
+          Back
+      </button>
+      <br>
       <PersonDetail :person="selectedPerson" :street="selectedStreet"/>
     </div>
     <div class="map" id="map"></div>
@@ -25,6 +34,8 @@ import DialogStreet from "@/components/DialogStreet";
 import AddStreet from "@/components/AddStreet";
 import PersonDetail from "@/components/PersonDetail";
 import axios from 'axios';
+import { API } from '@/axios-api';
+import strelka from "../assets/str_1.png";
 
 export default {
   name: "MapView",
@@ -41,45 +52,37 @@ export default {
       searchQuery: '',
       selectedStreet: null,
       selectedPerson: null,
-      map: null
-      //districts_api: []
+      map: null,
+      strelka
     };
   },
   methods: {
     loadStreet() {
-      axios
-      .get('http://127.0.0.1:8000/api/streets/')
-      .then(response => {
-          //console.log('data', response.data)
-          this.streets_api = response.data
-          //console.log(this.streets_api)
-        })
-        .catch(error => {
-            console.log('error', error)
-        })
-    },
+      API
+        .get('streets/')
+        .then(response => {
+            this.streets_api = response.data
+          })
+          .catch(error => {
+              console.log('error не получены streets в MapView', error)
+          })
+      },
     loadPerson() {
-      axios
-        .get('http://127.0.0.1:8000/api/persons/')
+      API
+        .get('persons/')
         .then(response => {
           this.persons_api = response.data
         })
         .catch(error => {
-            console.log('error', error)
+            console.log('error не получены persons в MapView', error)
         })
     },
     showDialog() {
       this.dialogVisible = true
-      console.log('Нажалось')
     },
     selectOneStreet(street) {
       this.selectedStreet = street,
       this.selectedPerson = this.persons_api.find(item => item.id == street.id_person)
-      
-
-      //this.persons_api.forEach((item, index) => {
-       // if (item.id == street.id_person) this.selectedPerson=item
-     // })
     },
     toList() {
       this.selectedStreet=null,
@@ -131,7 +134,7 @@ export default {
         };
       var points = [0.0, 0.0];
       var list = this.streets_api;
-      console.log('Перешло');
+      //console.log('Перешло');
       //var collection = new ymaps.GeoObjectCollection(null, {preset: 'islands#circleIcon', iconColor: '#3caa3c'});
       for (var i = 0, l = list.length; i < l; i++) {
         points[0] = list[i].coordinates_0;
@@ -145,20 +148,6 @@ export default {
             iconColor: '#3caa3c'
           }));  
       };
-      //myMap.geoObjects.add(collection);
-      //console.log(list);
-      //var geoObjects = [];
-      //for(var i = 0, len = this.streets_api.length; i < len; i++) {
-      //  var points = [,]
-      //  geoObjects[i] = new ymaps.Placemark(points[i], getPointData(i), getPointOptions());
-      //}
-      //var points = [0.0, 0.0];
-      //this.streets_api.forEach(element => {
-      //  points[0] = element.coordinates_0
-      //  points[1] = element.coordinates_1
-      //  geoObjects.push(new ymaps.Placemark(points, getPointData(element.street_name_ru), getPointOptions()))
-      //});
-      
       /*myMap.geoObjects
         .add(new ymaps.Placemark([54.719310, 56.007928], {
           balloonContent: '<strong>Улица</strong>'
@@ -235,5 +224,23 @@ export default {
   background-color: transparent;
   border-bottom: 1px solid #000000;
   outline: 0;
+}
+.btn {
+	border: none;
+	border-radius: 7px;
+	cursor: pointer;
+	color: black;
+	font-family: "Arimo";
+  font-size: 20px;
+  font-weight: 500;
+	letter-spacing: .05em;
+	padding: 10px 40px;
+	position: relative;
+  background-color: transparent;
+}
+.img {
+  height: 22px;
+  width: 22px;
+  margin-bottom: -4px;
 }
 </style>

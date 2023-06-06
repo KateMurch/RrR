@@ -1,7 +1,6 @@
 <template>
     <div class="list">
         <StreetItem v-for="street_one in streets" :key="street_one.id" :street="street_one" :person="getPerson(street_one)" @click="selectedStreet(street_one)" />
-        <!--<StreetItem :streets="streets_api" />-->
     </div>
 </template>
 
@@ -30,21 +29,18 @@ export default {
     },
     methods: {
         selectedStreet(street) {
-            //console.log(street),
             this.$emit('select', street)
         },
         getPerson(street) {
             return this.persons.find(item => item.id == street.id_person)
         }
-    },
-    computed: {
-        
     }
 }
 </script>
 
 <style scoped>
 .list {
+    height: 490px; 
     overflow-y: scroll;
 }
 .list::-webkit-scrollbar {

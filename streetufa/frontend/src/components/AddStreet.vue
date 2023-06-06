@@ -2,25 +2,25 @@
     <div class="add_street">
       <form @submit.prevent="submitForm" method="post">
         <p class="head">Добавление улицы</p>
-        <div class="input">
-          <label class="label">Название улицы (рус. и англ.): </label>
-          <input type="text" v-model.trim="name_ru" placeholder="Улица ...">
-          <input type="text" v-model.trim="name_en" placeholder="... Street">
+        <div class="field">
+          <label class="label">Название улицы (рус. и англ.): </label><br>
+          <input class="input" type="text" v-model.trim="name_ru" placeholder="Улица ...">
+          <input class="input" type="text" v-model.trim="name_en" placeholder="... Street">
         </div>
-        <div class="input">
-          <label class="label">Координаты:</label>
-          <input type="text" :value="new_coords[0]">
-          <input type="text" :value="new_coords[1]">
+        <div class="field">
+          <label class="label">Координаты:</label><br>
+          <input class="input" type="text" :value="new_coords[0]">
+          <input class="input" type="text" :value="new_coords[1]">
         </div>
-        <div class="select">
-          <label class="label">Известная личность: </label>
+        <div class="field">
+          <label class="label">Известная личность: </label><br>
           <select v-model="person_id">
             <option disabled value="">Выберите один из вариантов</option>
-            <option v-for="person in persons" :value="person.id" :key="person.id" > {{ person.person_name_ru }} </option>
+            <option v-for="person in reversePerson" :value="person.id" :key="person.id" > {{ person.person_name_ru }} </option>
           </select>
         </div>
-        <div class="select">
-          <label class="label">Район: </label>
+        <div class="field">
+          <label class="label">Район: </label><br>
           <select v-model="district_id">
             <option disabled value="">Выберите один из вариантов</option>
             <option v-for="district in districts" :value="district.id" :key="district.id" > {{ district.district_name_ru }} </option>
@@ -33,6 +33,8 @@
 
 <script>
 import axios from 'axios';
+import { API } from '@/axios-api';
+import { mapState } from 'vuex';
 
 export default {
   name: "AddStreet",
@@ -65,37 +67,48 @@ export default {
       form_data.append('id_district', this.district_id);
       form_data.append('id_person', this.person_id);
 
-      axios
-        .post('http://127.0.0.1:8000/api/streets/', form_data)
+      API
+        .post('streets/', form_data, {
+          headers: {
+              'Authorization': `Bearer ${this.$store.state.accessToken}`,
+              'X-CSRFToken': localStorage.getItem('csrfToken')
+          }
+        })
         .then(response => {
-          console.log('data', response.data)
+            console.log('Сохранение в улицы data', response.data)
         })
         .catch(error => {
-            console.log('error', error)
+            console.log('error при сохранении в улицы', error)
         })
       
     },
     loadPerson() {
-      axios
-        .get('http://127.0.0.1:8000/api/persons/')
+      API
+        .get('persons/')
         .then(response => {
           this.persons = response.data
-          //console.log(this.persons_api)
         })
         .catch(error => {
-            console.log('error', error)
+            console.log('error при получении persons', error)
         })
     },
     loadDistrict() {
-      axios
-        .get('http://127.0.0.1:8000/api/districts/')
+      API
+        .get('districts/')
         .then(response => {
           this.districts = response.data
         })
         .catch(error => {
-            console.log('error', error)
+            console.log('error при получении district', error)
         })
     },
+  },
+  computed: {
+    reversePerson() {
+      var rev_list = this.persons;
+      rev_list = rev_list.reverse();
+      return rev_list;
+    }
   },
   created() {
     this.loadPerson();
@@ -105,12 +118,76 @@ export default {
 </script>
 
 <style scoped>
+.add_street {
+  font-size: 20px;
+  font-family: "Arimo";
+}
+.field {
+  margin-bottom: 10px;
+}
 .head {
   font-family: "Playfair Display";
-  color: #492607;
+  color: #311a05;
   font-size: 36px;
   margin-top: 0;
-  margin-left: 30%;
+  margin-left: 23%;
   font-weight: 700;
+}
+.input {
+  width: 65%;
+  height: 25px;
+  padding: 0.375rem 0.75rem;
+  font-size: 16px;
+  margin: 0 0 5px 10px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #2e3031;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+.input::placeholder {
+  color: #000000;
+  opacity: 0.6;
+}
+.input:focus {
+  background-color: transparent;
+  border-bottom: 1px solid #000000;
+  outline: 0;
+}
+select {
+  width: 65%;
+  height: 35px;
+  padding: 0.375rem 0.75rem;
+  font-size: 16px;
+  margin: 0 0 5px 10px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #2e3031;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+select::placeholder {
+  color: #000000;
+  opacity: 0.6;
+}
+select:focus {
+  background-color: transparent;
+  border-bottom: 1px solid #000000;
+  outline: 0;
+}
+option {
+  background-color: rgb(226, 226, 226);
+}
+button {
+	border: none;
+	border-radius: 7px;
+	cursor: pointer;
+	color: black;
+	font-family: "Arimo";
+  font-size: 20px;
+  font-weight: 500;
+	letter-spacing: .05em;
+	padding: 10px 40px;
+	position: relative;
+  float: right;
+  background-color: rgba(253, 253, 253, 0.7);
 }
 </style>

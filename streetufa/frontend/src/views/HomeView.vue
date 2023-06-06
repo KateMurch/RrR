@@ -1,7 +1,6 @@
 <template>
   <div class="home">
-    <!--<img alt="Vue logo" src="../assets/logo.png" />-->
-    <div class="left_content">
+    <div v-if="$store.state.isEng === true" class="left_content">
       <div class="content_head">Многоликая Уфа</div>
       <div class="content_one">
         <div class="picture">
@@ -15,6 +14,20 @@
         <div class="src_map"><router-link to="/mapufa" class="aaa">показать карту</router-link></div>
       </div>      
     </div>
+    <div v-else class="left_content">
+      <div class="content_head">Multifaceted Ufa</div>
+      <div class="content_one">
+        <div class="picture">
+          <img :src="pic_1" class="img1">
+          <img :src="pic_2" class="img2">
+          <img :src="pic_3" class="img3">
+        </div>
+        <div class="text">Find out who the streets of your favourite city are named after</div>
+      </div>
+      <div class="content_two">
+        <div class="src_map"><router-link to="/mapufa" class="aaa">show a map</router-link></div>
+      </div>      
+    </div>
   </div>
 </template>
 
@@ -26,7 +39,6 @@ import pic_2 from "../assets/home_pic_3.png";
 
 export default {
   name: "HomeView",
-  components: {},
   data() {
     return {
       pic_1, pic_2, pic_3
@@ -44,6 +56,7 @@ export default {
   height: 500px;
   width: 42%;
   border-radius: 15px;
+  position: fixed;
 }
 .content_head {
   text-align: center;
@@ -67,6 +80,7 @@ export default {
   background-image: url("../assets/home_map.png");
   background-size: cover;
   border-radius: 25px;
+  text-align: center;
 }
 .aaa {
   font-weight: bold;
@@ -76,8 +90,8 @@ export default {
   text-decoration: none;
   position: relative;
   top: 40%;
-  left: 21%;
   padding: 15px;
+  width: 200px;
   border: 1px solid;
   border-radius: 18px;
   background-color: rgb(255, 251, 247);

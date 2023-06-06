@@ -10,12 +10,12 @@
           </div>
           <div class="field">
             <label class="label">Годы жизни:</label><br>
-            <input class="input_num" type="text" v-model.number.trim="birth_d" placeholder="Год рождения">-
-            <input class="input_num" type="text" v-model.number.trim="death_d" placeholder="Год смерти">
+            <input class="input_num" type="text" v-model.number.trim="birth_d">-
+            <input class="input_num" type="text" v-model.number.trim="death_d">
           </div>
           <div class="field">
             <label class="label">Изображение:</label><br>
-            <input type="file" @change="fileSelected($event)">
+            <input class="file" type="file" @change="fileSelected($event)">
           </div>
         </div>
         <div class="right_content">
@@ -32,6 +32,7 @@
 
 <script>
 import axios from 'axios';
+import { API } from '@/axios-api';
 
 export default {
   name: "AddView",
@@ -53,7 +54,6 @@ export default {
       console.log(this.image);
     },
     submitForm() {
-      //console.log('dis + pers', this.district_id, this.person_id)
       let form_data = new FormData();
       form_data.append('person_name_ru', this.name_ru);
       form_data.append('person_name_en', this.name_en);
@@ -63,60 +63,27 @@ export default {
       form_data.append('content_en', this.cont_en);
       form_data.append('photo', this.image, this.image.name);
 
-      axios
-      /*.post('http://127.0.0.1:8000/api/persons/', {
-          'person_name_ru': this.name_ru,
-          'person_name_en': this.name_en,
-          'birth_date': this.birth_d,
-          'death_date': this.death_d,
-          'content': this.cont,
-          'photo': form_img
-          'death_date': parseFloat(this.coord_2),
-          'id_district': this.district_id,
-          'id_person': this.person_id
-        })*/
-        .post('http://127.0.0.1:8000/api/persons/', form_data)
+      API
+        .post('persons/', form_data, {
+          headers: {
+              'Authorization': `Bearer ${this.$store.state.accessToken}`,
+              'X-CSRFToken': localStorage.getItem('csrfToken')
+          }
+        })
         .then(response => {
-          console.log('data', response.data),
-          this.name_ru = '',
-          this.name_en = '',
-          this.birth_d = 0,
-          this.death_d = 0,
-          this.cont_ru = '',
-          this.cont_en = '',
-          this.image = null
+            this.name_ru = '',
+            this.name_en = '',
+            this.birth_d = 0,
+            this.death_d = 0,
+            this.cont_ru = '',
+            this.cont_en = '',
+            this.image = null
         })
         .catch(error => {
-            console.log('error', error)
+            console.log('error при сохранении person в AddView', error)
         })
-      
-    },
-    loadPerson() {
-      axios
-      .get('http://127.0.0.1:8000/api/persons/')
-      .then(response => {
-          this.persons = response.data
-          //console.log(this.persons_api)
-        })
-        .catch(error => {
-            console.log('error', error)
-        })
-    },
-    loadDistrict() {
-      axios
-      .get('http://127.0.0.1:8000/api/districts/')
-      .then(response => {
-          this.districts = response.data
-        })
-        .catch(error => {
-            console.log('error', error)
-        })
-    },
-  },
-  created() {
-    this.loadPerson();
-    this.loadDistrict();
-  },
+    }
+  }
 }
 </script>
 
@@ -146,7 +113,7 @@ export default {
   font-family: "Playfair Display";
   color: #492607;
   font-size: 36px;
-  margin-left: 30%;
+  margin: 30px 0 30px 39%;
   font-weight: 700;
 }
 .field {
@@ -208,5 +175,31 @@ export default {
   background-color: transparent;
   border-bottom: 1px solid #000000;
   outline: 0;
+}
+.btn {
+	border: none;
+	border-radius: 7px;
+	color: black;
+	font-family: "Arimo";
+  font-size: 20px;
+  font-weight: 500;
+	letter-spacing: .05em;
+	padding: 10px 40px;
+	position: relative;
+  float: right;
+  background-color: rgba(253, 253, 253, 0.7);
+  margin-top: 64px;
+}
+.btn:hover {
+  background-color:  rgba(253, 253, 253, 0.9);
+}
+.file {
+  margin-top: 10px;
+	color: black;
+	font-family: "Arimo";
+  font-size: 16px;
+  font-weight: 500;
+	letter-spacing: .05em;
+	padding: 5px 8px;
 }
 </style>
