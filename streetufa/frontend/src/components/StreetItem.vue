@@ -1,16 +1,11 @@
 <template>
-    <div v-if="$store.state.isEng === true" class="one_street">
-        <div class="name">{{ street.street_name_ru }}</div>
+    <div class="one_street">            
+        <div class="name">{{ $store.state.isEng === false?street.street_name_ru:street.street_name_en }}</div>
         <div v-if="person" class="image"><img class="img" :src="person.photo" alt="Image"></div>
-    </div>
-    <div v-else class="one_street">
-        <div class="name">{{ street.street_name_en }}</div>
-        <div v-if="person" class="image"><img class="img" :src="person.photo" alt="Image"></div>
-    </div>
+    </div> 
 </template>
 
 <script>
-
 export default {
     name: "StreetItem",
     props: {
@@ -21,7 +16,7 @@ export default {
         person: {
             type: Object,
             required: true,
-        },  
+        }
     }
 }
 </script>

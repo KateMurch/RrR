@@ -3,7 +3,7 @@ module.exports = defineConfig({
   transpileDependencies: true
 });
 
-const pages = {
+/* const pages = {
   index: "src/main.js",
 };
 
@@ -14,4 +14,19 @@ module.exports = {
 
   pages: pages,
 
+}; */
+
+/* const pages = {
+  index: "src/main.js",
 };
+ */
+/* module.exports = {
+    publicPath: process.env.NODE_ENV === 'production'
+    ? '/ufa_streets/'
+    : '/',
+  outputDir: "./dist",
+   indexPath: "../../templates/vue_index.html",
+
+  pages: pages,
+
+}; */

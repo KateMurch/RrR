@@ -10,8 +10,8 @@
           </div>
           <div class="field">
             <label class="label">Годы жизни:</label><br>
-            <input class="input_num" type="text" v-model.number.trim="birth_d">-
-            <input class="input_num" type="text" v-model.number.trim="death_d">
+            <input class="input_num" type="text" v-model.number.trim="birth_d" placeholder="Год рождения">-
+            <input class="input_num" type="text" v-model.number.trim="death_d" placeholder="Год смерти">
           </div>
           <div class="field">
             <label class="label">Изображение:</label><br>
@@ -31,12 +31,11 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 import { API } from '@/axios-api';
 
 export default {
   name: "AddView",
-  components: {},
   data() {
     return {
       name_ru: '',
@@ -71,19 +70,19 @@ export default {
           }
         })
         .then(response => {
-            this.name_ru = '',
-            this.name_en = '',
-            this.birth_d = 0,
-            this.death_d = 0,
-            this.cont_ru = '',
-            this.cont_en = '',
-            this.image = null
+          this.name_ru = '',
+          this.name_en = '',
+          this.birth_d = 0,
+          this.death_d = 0,
+          this.cont_ru = '',
+          this.cont_en = '',
+          this.image = null
         })
         .catch(error => {
-            console.log('error при сохранении person в AddView', error)
+          console.log('error при сохранении person в AddView', error)
         })
-    }
-  }
+    },
+  },
 }
 </script>
 

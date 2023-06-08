@@ -22,11 +22,6 @@ export default {
             required: true,
         }
     },
-    data() {
-        return {
-            //selectedStreet: null
-        }
-    },
     methods: {
         selectedStreet(street) {
             this.$emit('select', street)
@@ -42,6 +37,7 @@ export default {
 .list {
     height: 490px; 
     overflow-y: scroll;
+    overflow:auto;
 }
 .list::-webkit-scrollbar {
   width: 12px;

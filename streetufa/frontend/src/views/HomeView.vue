@@ -1,54 +1,44 @@
 <template>
   <div class="home">
-    <div v-if="$store.state.isEng === true" class="left_content">
-      <div class="content_head">Многоликая Уфа</div>
+    <div class="left_content">
+      <div class="content_head">{{$store.state.isEng===false?'Многоликая Уфа':'Multifaceted Ufa'}}</div>
       <div class="content_one">
         <div class="picture">
           <img :src="pic_1" class="img1">
           <img :src="pic_2" class="img2">
           <img :src="pic_3" class="img3">
         </div>
-        <div class="text">Узнай, в честь кого названы улицы любимого города </div>
+        <div class="text">{{$store.state.isEng===false?'Узнай, в честь кого названы улицы любимого города':'Find out who the streets of your favourite city are named after'}}</div>
       </div>
       <div class="content_two">
-        <div class="src_map"><router-link to="/mapufa" class="aaa">показать карту</router-link></div>
-      </div>      
-    </div>
-    <div v-else class="left_content">
-      <div class="content_head">Multifaceted Ufa</div>
-      <div class="content_one">
-        <div class="picture">
-          <img :src="pic_1" class="img1">
-          <img :src="pic_2" class="img2">
-          <img :src="pic_3" class="img3">
+        <div class="src_map">
+          <router-link v-if="accessToken==null" to="/login" class="aaa">{{$store.state.isEng===false?'показать карту':'show a map'}}</router-link>
+          <router-link v-else to="/mapufa" class="aaa">{{$store.state.isEng===false?'показать карту':'show a map'}}</router-link>
         </div>
-        <div class="text">Find out who the streets of your favourite city are named after</div>
-      </div>
-      <div class="content_two">
-        <div class="src_map"><router-link to="/mapufa" class="aaa">show a map</router-link></div>
       </div>      
     </div>
   </div>
 </template>
 
 <script>
-//import HelloWorld from "@/components/HelloWorld.vue";
 import pic_1 from "../assets/home_pic_1.png";
 import pic_3 from "../assets/home_pic_2.png";
 import pic_2 from "../assets/home_pic_3.png";
+import { mapState } from 'vuex';
 
 export default {
   name: "HomeView",
+  components: {},
   data() {
     return {
       pic_1, pic_2, pic_3
     };
   },
+  computed: mapState(['accessToken']),
 };
 </script>
 
 <style scoped>
-@import url("https://fonts.googleapis.com/css?family=Arimo");
 .left_content {
   background: rgba(253, 253, 253, 0.3);
   backdrop-filter: blur(3px);

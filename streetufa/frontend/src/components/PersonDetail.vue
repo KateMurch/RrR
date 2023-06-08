@@ -1,37 +1,27 @@
 <template>
-    <div v-if="$store.state.isEng === true" class="detail">
-        <div class="top_content">
-            <div v-if="person" class="top_left_content">
-                <div class="street_name">{{ street.street_name_ru }}</div>
-                <div class="person_name">{{ person.person_name_ru }}</div>
-                <div class="person_life">({{ person.birth_date }} - {{ person.death_date }})</div>
+    <div class="detail">
+        <div class="detail">
+            <div class="top_content">
+                <div v-if="person" class="top_left_content">
+                    <div class="street_name">{{ $store.state.isEng === false?street.street_name_ru:street.street_name_en }}</div>
+                    <div class="person_name">{{ $store.state.isEng === false?person.person_name_ru:person.person_name_en }}</div>
+                    <div class="person_life">({{ person.birth_date }} - {{ person.death_date }})</div>
+                </div>
+                <div v-if="person" class="top_right_content">
+                    <img class="img" :src="person.photo" alt="Image">
+                </div>
             </div>
-            <div v-if="person" class="top_right_content">
-                <img class="img" :src="person.photo" alt="Image">
+            <div v-if="person" class="bottom_content">
+                <div class="person_content">{{ $store.state.isEng === false?person.content_ru:person.content_en }}</div>
             </div>
-        </div>
-        <div v-if="person" class="bottom_content">
-            <div class="person_content">{{ person.content_ru }}</div>
-        </div>
-    </div>
-    <div v-else class="detail">
-        <div class="top_content">
-            <div v-if="person" class="top_left_content">
-                <div class="street_name">{{ street.street_name_en }}</div>
-                <div class="person_name">{{ person.person_name_en }}</div>
-                <div class="person_life">({{ person.birth_date }} - {{ person.death_date }})</div>
-            </div>
-            <div v-if="person" class="top_right_content">
-                <img class="img" :src="person.photo" alt="Image">
-            </div>
-        </div>
-        <div v-if="person" class="bottom_content">
-            <div class="person_content">{{ person.content_en }}</div>
         </div>
     </div>
 </template>
 
 <script>
+//import { useMapStore } from '../store/store';
+//let {lang}= useMapStore()
+
 export default {
     name: "PersonDetail",
     props: {
@@ -81,7 +71,8 @@ export default {
     margin-top: 50px;
 }
 .img {
-    width: 95%;
+    height: 240px;
+    float:right;
 }
 .person_content {
     margin: 0 5% 0 5%;

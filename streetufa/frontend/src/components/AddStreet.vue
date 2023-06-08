@@ -4,8 +4,8 @@
         <p class="head">Добавление улицы</p>
         <div class="field">
           <label class="label">Название улицы (рус. и англ.): </label><br>
-          <input class="input" type="text" v-model.trim="name_ru" placeholder="Улица ...">
-          <input class="input" type="text" v-model.trim="name_en" placeholder="... Street">
+          <input type="text" v-model.trim="name_ru" class="input" placeholder="Улица ...">
+          <input type="text" v-model.trim="name_en" class="input" placeholder="... Street">
         </div>
         <div class="field">
           <label class="label">Координаты:</label><br>
@@ -14,10 +14,16 @@
         </div>
         <div class="field">
           <label class="label">Известная личность: </label><br>
-          <select v-model="person_id">
-            <option disabled value="">Выберите один из вариантов</option>
-            <option v-for="person in reversePerson" :value="person.id" :key="person.id" > {{ person.person_name_ru }} </option>
-          </select>
+          <input type="text" list="_persons"  v-model="person_id">
+          <datalist id="_persons" >
+              <option value="">Выберите один из вариантов</option>
+              <option 
+                v-for="person in persons"
+                :key="person.id" 
+                :value="person.id"> 
+                  {{person.person_name_ru}}
+              </option>
+          </datalist>
         </div>
         <div class="field">
           <label class="label">Район: </label><br>
@@ -32,13 +38,12 @@
 </template>
 
 <script>
-import axios from 'axios';
+//import axios from 'axios';
 import { API } from '@/axios-api';
-import { mapState } from 'vuex';
+//import { mapState } from 'vuex';
 
 export default {
   name: "AddStreet",
-  components: {},
   props: {
     new_coords: {
         type: Array,
@@ -49,8 +54,6 @@ export default {
     return {
       name_ru: '',
       name_en: '',
-      //coord_0: 0,
-      //coord_1: 0,
       person_id: 1,
       district_id: 1,
       persons: [],
@@ -75,12 +78,12 @@ export default {
           }
         })
         .then(response => {
-            console.log('Сохранение в улицы data', response.data)
+          //console.log('data', response.data)
+            console.log('Сохранение улицы', response.data)
         })
         .catch(error => {
             console.log('error при сохранении в улицы', error)
-        })
-      
+        })    
     },
     loadPerson() {
       API
@@ -102,13 +105,6 @@ export default {
             console.log('error при получении district', error)
         })
     },
-  },
-  computed: {
-    reversePerson() {
-      var rev_list = this.persons;
-      rev_list = rev_list.reverse();
-      return rev_list;
-    }
   },
   created() {
     this.loadPerson();

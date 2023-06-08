@@ -8,7 +8,9 @@ export default createStore({
     accessToken: localStorage.getItem('access') || null,
     refreshToken: localStorage.getItem('refresh') || null,
     user: JSON.parse(localStorage.getItem('user')) || null,
-    //APIData: ''
+    count: 0,
+    map:null,
+    lang:'ru'
   },
   //computed
   getters: {
@@ -19,7 +21,6 @@ export default createStore({
   //function для изменения state
   mutations: {
     set_isEng: state => {
-      //if (state.isEng === false) {state.isEng = true} else {state.isEng = false}
       state.isEng = !state.isEng
     },
     updateStorage (state, {access, refresh}) {
@@ -91,5 +92,11 @@ export default createStore({
           context.commit('destroyToken')
       }
     },
+    increment() {
+      this.count++
+    },
+    changeLang(){
+      this.lang=='ru'?this.lang='en':this.lang='ru'
+    }
   }
 })

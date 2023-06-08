@@ -1,7 +1,8 @@
 import { createApp } from "vue";
+//import { createPinia } from 'pinia'
 import App from "./App.vue";
 import router from "./router";
-//import axios from "axios";
+import axios from "axios";
 import store from "./store";
 
 //const cors = require('cors');
@@ -11,6 +12,9 @@ import store from "./store";
 //    optionSuccessStatus:200
 //}
 
-createApp(App).use(router).use(store).mount("#app");
+ createApp(App).use(store).use(router).mount("#app"); 
+
+
 
 //axios.defaults.baseURL = "http://127.0.0.1:8000";
+//axios.defaults.baseURL = "https://ivaruk6u.beget.tech/";
