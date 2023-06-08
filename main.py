@@ -23,5 +23,6 @@ if __name__ == '__main__':
 #npm install pug?
 #npm install --save axios, vuex, vue-router
 # python -m pip install django-cors-headers
+# pip install djangorestframework-simplejwt
 
 # pip freeze > requirement.txt
