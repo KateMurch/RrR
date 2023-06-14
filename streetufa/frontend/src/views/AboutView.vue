@@ -1,7 +1,7 @@
 <template>
   <div class="about">
     <div class="center_content">
-      <div v-if="$store.state.isEng === true" class="group_text">
+      <div v-if="$store.state.isEng === false" class="group_text">
         <div class="header">Многоликая Уфа</div>
         <div class="content">Названия улиц Уфы помогают увековечить память об известных личностях и исторических событиях, получивших известность в городе, стране, или во всем мире, а также отразить культурно-историческое наследие города и республики.</div>
         <br>

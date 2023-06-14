@@ -14,7 +14,7 @@
         </div>
         <div class="field">
           <label class="label">Известная личность: </label><br>
-          <input type="text" list="_persons"  v-model="person_id">
+          <input type="text" list="_persons" class="input" v-model="person_id">
           <datalist id="_persons" >
               <option value="">Выберите один из вариантов</option>
               <option 
@@ -79,7 +79,8 @@ export default {
         })
         .then(response => {
           //console.log('data', response.data)
-            console.log('Сохранение улицы', response.data)
+            console.log('Сохранение улицы', response.data),
+            this.$router.push({ name: 'mapufa_edit' })
         })
         .catch(error => {
             console.log('error при сохранении в улицы', error)
@@ -185,5 +186,25 @@ button {
 	position: relative;
   float: right;
   background-color: rgba(253, 253, 253, 0.7);
+}
+datalist {
+  width: 65%;
+  height: 35px;
+  padding: 0.375rem 0.75rem;
+  font-size: 16px;
+  margin: 0 0 5px 10px;
+  background-color: transparent;
+  border: 1px solid transparent;
+  border-bottom: 1px solid #2e3031;
+  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+}
+datalist::placeholder {
+  color: #000000;
+  opacity: 0.6;
+}
+datalist:focus {
+  background-color: transparent;
+  border-bottom: 1px solid #000000;
+  outline: 0;
 }
 </style>

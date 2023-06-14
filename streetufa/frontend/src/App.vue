@@ -3,7 +3,7 @@
     <div class="menu-main">
       <router-link to="/" class="left-item">{{$store.state.isEng===false?'Главная':'Home'}}</router-link>
       <router-link v-if="accessToken!=null" to="/about" class="left-item">{{$store.state.isEng===false?'О сайте':'About'}}</router-link>
-      <router-link v-if="accessToken!=null" to="/mapufa" class="left-item">{{$store.state.isEng===false?'Интерактивная карта':'InterActive Map'}}</router-link>
+      <router-link v-if="(accessToken!=null)&&(user!=null)&&(user.usermodel.role===0)" to="/mapufa" class="left-item">{{$store.state.isEng===false?'Интерактивная карта':'InterActive Map'}}</router-link>
       <router-link v-if="(accessToken!=null)&&(user!=null)&&(user.usermodel.role===1)" to="/mapufa_edit" class="left-item">{{$store.state.isEng===false?'Редактор карты':'Map Editor'}}</router-link>
       <router-link v-if="(accessToken!=null)&&(user!=null)&&(user.usermodel.role===1)" to="/addmark" class="left-item">{{$store.state.isEng===false?'Добавить известную личность':'Add Famous People'}}</router-link>
       <button class="right-item lang" @click="$store.commit('set_isEng')">RU-EN</button>

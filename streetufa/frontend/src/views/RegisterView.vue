@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.state.isEng === true" class="center">
+    <div v-if="$store.state.isEng === false" class="center">
       <p class="head">Регистрация пользователя</p>
       <!--<p v-if="incorrectReg">Incorrect username or password entered - please try again</p>-->
       <form v-on:submit.prevent="registration" class="form">

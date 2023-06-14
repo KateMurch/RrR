@@ -1,5 +1,5 @@
 <template>
-    <div v-if="$store.state.isEng === true" class="center">
+    <div v-if="$store.state.isEng === false" class="center">
         <p class="head">Войдите в свою учетную запись</p><br>
         <p v-if="incorrectAuth" class="incorrect">Неверное имя пользователя или пароль - пожалуйста повторите снова</p>
         <form v-on:submit.prevent="login" class="form">
